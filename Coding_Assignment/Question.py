@@ -1,4 +1,36 @@
 def monitor_following_distance(distances: list[float], speeds: list[float]) -> tuple[int, float, int]:
+
+    tailgating_seconds = 0
+    for i  in range(len(distances)):
+        if distances[i] < speeds[i] * 0.5:
+            tailgating_seconds += 1
+
+    if distances:
+        min_distance =  min(distances)
+    else:
+        min_distance = 0.0
+
+    tailgating = [False]
+    incidents = 0
+    for i in range(len(distances)):
+        if distances[i] < speeds[i] * 0.5:
+            tailgating.append(True)
+        else:
+            tailgating.append(False)
+
+    for i in range(len(tailgating)-1):
+        if not tailgating[i] and tailgating[i+1]:
+            incidents+=1
+
+    result = (tailgating_seconds,min_distance,incidents)
+
+    return result
+
+
+
+
+
+
     """
     Analyzes following distance compared to safe distance (speed * 0.5).
     
@@ -12,4 +44,4 @@ def monitor_following_distance(distances: list[float], speeds: list[float]) -> t
             - minimum_distance: absolute closest distance to the lead car (return 0.0 if empty list)
             - tailgate_incidents: number of separate instances the car started tailgating
     """
-    pass
+
